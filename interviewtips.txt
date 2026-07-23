@@ -1,0 +1,35 @@
+Interview Tip ⭐
+⭐If an interviewer asks:
+
+Why didn’t you hardcode the PDF names?
+A good answer is:
+“Production systems should automatically discover documents
+ from a configured directory. This makes the solution scalable
+ —adding a new PDF doesn’t require any code changes.”
+
+
+⭐ Interview Question
+
+Interviewer:
+
+Why did you use continue?(coding best practices)
+
+Answer:
+
+os.listdir() returns all files in the directory.
+ I only want PDF documents for indexing, so I skip non-PDF files early.
+ This keeps the ingestion pipeline robust and prevents errors if other file types are present.
+
+
+Interview Answer ⭐
+
+If an interviewer asks:
+
+Why didn’t you put everything in __init__()?
+
+A good answer is:
+
+“The class follows the Single Responsibility Principle by handling only BM25 retrieval.
+ Within the class, I also keep each method focused on a single task—loading documents,
+ building the index, or searching. This improves readability, maintainability, testing,
+ and future extensibility.”

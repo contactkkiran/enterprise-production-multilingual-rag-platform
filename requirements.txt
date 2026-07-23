@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+python-dotenv
+langchain
+langchain-openai
+langchain-chroma
+langchain-text-splitters
+chromadb
+PyMuPDF
+openai
+psycopg2-binary
+rank-bm25

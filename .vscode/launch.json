@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Production RAG - service debug",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "app.services.rag_service",
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}/.env",
+      "env": {
+        "LOG_LEVEL": "debug"
+      },
+      "justMyCode": false
+    }
+  ]
+}

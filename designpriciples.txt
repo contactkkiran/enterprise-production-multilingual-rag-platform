@@ -1,0 +1,49 @@
+⭐ Why are we making load_documents() a method instead of writing everything in __init__()?
+
+Because we want one method to do one job.
+
+BM25Retriever
+│
+├── __init__()          → Initialize variables
+│
+├── load_documents()    → Read PDFs
+│
+├── build_index()       → Create BM25 index
+│
+└── search()            → Search documents
+
+This follows the Single Responsibility Principle (SRP)
+and makes the code easier to maintain, test, and extend. It’s a common pattern in enterprise Python applications.
+
+Bad Design ❌
+
+class BM25Retriever:
+
+    def __init__(self):
+
+        load PDFs
+
+        tokenize
+
+        build index
+
+        search
+
+        call GPT
+
+        save to PostgreSQL
+
+Good Design ✅
+class BM25Retriever:
+
+    def __init__(self):
+        ...
+
+    def load_documents(self):
+        ...
+
+    def build_index(self):
+        ...
+
+    def search(self):
+        ...

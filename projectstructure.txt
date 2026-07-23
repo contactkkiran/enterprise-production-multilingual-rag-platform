@@ -1,0 +1,88 @@
+fastapi_rag_project/
+│
+├── app/                        # Main application code
+│   ├── __init__.py             # Marks this as a Python package
+│   ├── main.py                 # FastAPI entry point
+│   ├── database/               # Database-related code
+│   │   ├── __init__.py
+│   │   └── database.py         # PostgreSQL connection + query logging
+│   ├── rag/                    # Retrieval-Augmented Generation logic
+│   │   ├── __init__.py
+│   │   └── rag.py              # PDF ingestion + vector store setup
+│   ├── agent/                  # Agent orchestration
+│   │   ├── __init__.py
+│   │   └── agent.py            # Agent + tools
+│   └── models/                 # (Optional) Pydantic models for requests/responses
+│       ├── __init__.py
+│       └── query.py
+│
+├── data/                       # Store PDFs or other knowledge base files
+│   └── training_manual.pdf
+│
+├── chroma_db/                  # Vector database persistence
+│
+├── requirements.txt            # Dependencies
+└── README.md                   # Documentation
+
+
+---
+📝 Explanation of Each Folder
+• app/ → Core application code.
+	◦ main.py → FastAPI entry point, defines endpoints.
+	◦ database/ → Handles PostgreSQL connection and query logging.
+	◦ rag/ → PDF ingestion, chunking, embeddings, vector store setup.
+	◦ agent/ → Agent orchestration, defines tools and LLM logic.
+	◦ models/ → Pydantic models (optional, but good practice for request validation).
+• data/ → Store your PDFs or other documents you want to ingest.
+• chroma_db/ → Persistent storage for vector embeddings (created automatically when you run RAG).
+• requirements.txt → List of dependencies to install.
+• README.md → Documentation for setup and usage.
+---
+🧩 How It All Connects
+1. User sends query → FastAPI (main.py) receives it.
+2. Agent (agent.py) decides whether to retrieve from PDF or answer directly.
+3. RAG (rag.py) provides relevant chunks from the PDF.
+4. LLM generates the final answer.
+5. Database (database.py) logs the query and answer in PostgreSQL.
+
+🛠️ Installation Commands
+
+1. Create and activate a virtual environment (recommended)
+python -m venv venv
+source venv/bin/activate   # On macOS/Linux
+venv\Scripts\activate      # On Windows
+
+2. Install FastAPI and Uvicorn
+pip install fastapi uvicorn
+
+3. Install PostgreSQL driver
+pip install psycopg2
+
+4. Install LangChain + OpenAI + ChromaDB
+pip install langchain langchain-openai chromadb
+
+5. Install PDF parsing library
+pip install PyMuPDF
+
+pip install langchain langchain-community langchain-openai
+
+
+To debug this project
+# Debug the package module (recommended)
+update .vscode launch.json from your project wait
+
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Attach: debugpy (port 5678)",
+            "type": "python",
+            "request": "attach",
+            "connect": { "host": "localhost", "port": 5678 },
+            "justMyC ode": false
+        }
+    ]
+}
+save and in VS code termial run
+cd "/Users/kirankumar/Documents/Gen AI - Agentic AI + RAG — mastery roadmap/GenAI Developer Program/Rag/production-rag" && PYTHONPATH="${PWD}" /usr/bin/env /opt/anaconda3/bin/python -m debugpy --listen 5678 --wait-for-client -m app.services.rag_service
+and start debug from VS Code menu > Run
