@@ -2,6 +2,8 @@ import os
 
 import fitz
 
+from app.ingestion.unicode_normalizer import UnicodeNormalizer
+
 
 class PDFDocumentLoader:
     """
@@ -26,12 +28,22 @@ class PDFDocumentLoader:
             pdf_path = os.path.join(self.data_folder, file_name)
 
             page_contents = []
+
             with fitz.open(pdf_path) as pdf_document:
                 for page in pdf_document:
                     page_contents.append(page.get_text("text"))
 
+            # Combine all pages into a single document
+            document_text = "\n".join(page_contents)
+
+            # Normalize Unicode characters before downstream processing
+            document_text = UnicodeNormalizer.normalize(document_text)
+
             documents.append(
-                {"filename": file_name, "content": "\n".join(page_contents)}
+                {
+                    "filename": file_name,
+                    "content": document_text,
+                }
             )
 
         return documents
