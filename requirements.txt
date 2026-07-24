@@ -10,3 +10,4 @@ PyMuPDF
 openai
 psycopg2-binary
 rank-bm25
+

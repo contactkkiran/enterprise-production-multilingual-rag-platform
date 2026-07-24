@@ -17,3 +17,4 @@ class LanguageDetector:
 
         except LangDetectException:
             return "unknown"
+    

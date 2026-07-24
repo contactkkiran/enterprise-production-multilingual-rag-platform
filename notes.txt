@@ -1,1 +1,2 @@
-to run python -m app.services.rag_service
+activate virtual env using source .venv/bin/activate
+run python -m app.services.rag_service
