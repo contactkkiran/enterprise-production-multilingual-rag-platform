@@ -688,3 +688,353 @@ RAGService returns the best matching notes
 ```
 
 That is the heart of RAG.
+
+
+# Enterprise Roadmap
+
+The **Enterprise Production Multilingual RAG Platform** is designed to go beyond traditional Retrieval-Augmented Generation (RAG) systems. The following enterprise capabilities will make the platform scalable, intelligent, and production-ready.
+
+---
+
+## 1. Intelligent Retrieval Strategy
+
+Instead of always relying on semantic search, the platform intelligently selects the optimal retrieval strategy based on the query type.
+
+```text
+User Query
+      │
+      ▼
+Query Analyzer
+      │
+      ├── Policy ID        → BM25
+      ├── Natural Question → Semantic
+      ├── Mixed Query      → Hybrid
+      └── Table Query      → Table Retriever
+```
+
+The `RetrievalOrchestrator` acts as the decision engine to route queries to the most effective retrieval strategy.
+
+---
+
+## 2. Multilingual Ingestion
+
+Unlike many RAG implementations that only support English, this platform is designed for multilingual enterprise environments.
+
+### Supported Languages
+
+- English
+- Chinese
+- Japanese
+- Korean
+- Arabic
+- Hindi
+
+### Features
+
+- Unicode Normalization
+- Language Detection
+- Language-Aware Chunking
+- Multilingual Embeddings
+
+---
+
+## 3. Enterprise Metadata Pipeline
+
+Instead of storing only document content:
+
+```json
+{
+  "content": "..."
+}
+```
+
+The platform stores rich enterprise metadata.
+
+```json
+{
+  "content": "...",
+  "metadata": {
+    "language": "en",
+    "department": "HR",
+    "classification": "Internal",
+    "document_version": "3.1",
+    "effective_date": "...",
+    "source": "PDF"
+  }
+}
+```
+
+Rich metadata enables:
+
+- Intelligent filtering
+- Search optimization
+- Access control
+- Compliance
+- Analytics
+- Better enterprise governance
+
+---
+
+## 4. Automatic Document Classification
+
+During ingestion, AI automatically classifies enterprise documents.
+
+Supported document categories include:
+
+- Insurance Policy
+- Employee Handbook
+- Standard Operating Procedure (SOP)
+- Invoice
+- Legal Contract
+- Technical Manual
+
+Automatic classification improves retrieval precision and enterprise search.
+
+---
+
+## 5. AI Query Rewriting
+
+Short or ambiguous queries are automatically rewritten before retrieval.
+
+### User Query
+
+```text
+medical insurance
+```
+
+### AI Rewritten Query
+
+```text
+Show medical insurance policy benefits and exclusions.
+```
+
+Benefits:
+
+- Better semantic retrieval
+- Improved recall
+- Higher answer quality
+
+---
+
+## 6. Confidence Score
+
+Every generated answer includes a confidence score.
+
+Example:
+
+```text
+Confidence
+
+96%
+72%
+41%
+```
+
+If confidence falls below a configurable threshold, the system responds:
+
+> "I couldn't find sufficient evidence."
+
+This helps reduce hallucinations and increases trust.
+
+---
+
+## 7. Document Quality Analyzer
+
+Before indexing, every document is analyzed for quality.
+
+Checks include:
+
+- OCR Quality
+- Missing Pages
+- Duplicate Pages
+- Unreadable Text
+- Broken Tables
+
+This ensures only high-quality enterprise documents are indexed.
+
+---
+
+## 8. Plugin Architecture
+
+The ingestion framework is designed as a plugin architecture rather than hardcoding PDF support.
+
+```text
+Ingestion Plugin
+
+├── PDF
+├── Word
+├── Excel
+├── PowerPoint
+├── HTML
+└── Wiki
+```
+
+New document types can be added without modifying the core ingestion pipeline.
+
+---
+
+## 9. Enterprise Observability
+
+The platform continuously monitors operational metrics.
+
+Metrics include:
+
+- Retrieval Time
+- Embedding Time
+- Chunk Count
+- Cache Hit Ratio
+- Token Usage
+- Retrieval Strategy Used
+
+These metrics help optimize production performance and diagnose issues.
+
+---
+
+## 10. AI Explainability
+
+Enterprise AI should explain *why* an answer was generated.
+
+Example:
+
+```text
+Answer
+
+Retrieved From:
+HR Policy.pdf
+
+Strategy:
+Hybrid
+
+Confidence:
+95%
+
+Matched Chunks:
+4
+```
+
+Explainability builds user trust and provides transparency into the retrieval process.
+
+---
+
+# AI Query Intelligence Layer
+
+To make the platform more intelligent, an AI Query Intelligence Layer is introduced before retrieval.
+
+```text
+                User Query
+                     │
+                     ▼
+        AI Query Intelligence Engine
+                     │
+     ┌───────────────┼────────────────┐
+     ▼               ▼                ▼
+ Intent        Language        Entity Extraction
+ Detection      Detection      (Policy IDs, Names)
+     │               │                │
+     └───────────────┼────────────────┘
+                     ▼
+        Retrieval Orchestrator
+                     ▼
+     BM25 / Semantic / Hybrid / Table Search
+```
+
+### Responsibilities
+
+- Intent Detection
+- Language Detection
+- Entity Extraction
+- Query Classification
+- Retrieval Strategy Selection
+
+This transforms the platform from a traditional RAG system into an intelligent enterprise knowledge retrieval platform capable of reasoning about queries before searching.
+
+---
+
+# Enterprise Metadata Strategy
+
+## Does JSON Metadata Increase Token Usage?
+
+**Yes, but only when the metadata is included in the prompt sent to the LLM.**
+
+---
+
+## Case 1: Metadata Stored Only in the Vector Database (Recommended)
+
+```json
+{
+  "content": "Employees are entitled to 20 days of annual leave.",
+  "metadata": {
+    "language": "en",
+    "department": "HR",
+    "document_type": "Policy"
+  }
+}
+```
+
+In this approach, metadata is used for:
+
+- Filtering
+- Ranking
+- Access Control
+- Analytics
+
+Since the metadata is **not sent to the LLM**, it **does not increase prompt token usage**.
+
+---
+
+## Case 2: Metadata Included in the Prompt
+
+```text
+Document: HR Policy.pdf
+Language: en
+Department: HR
+Version: 3.1
+Classification: Internal
+
+Employees are entitled to 20 days of annual leave...
+```
+
+Every metadata field included in the prompt contributes to token usage.
+
+---
+
+## Enterprise Best Practice
+
+Store rich metadata inside the vector database while sending only relevant information to the LLM.
+
+Example metadata model:
+
+```json
+{
+  "content": "...",
+  "metadata": {
+    "language": "en",
+    "department": "HR",
+    "source": "PDF"
+  }
+}
+```
+
+Use metadata for:
+
+- Filtering (e.g., HR documents only)
+- Ranking
+- Access Control
+- Analytics
+
+Only include metadata in the prompt when it improves answer quality.
+
+### Recommended Metadata to Include
+
+- ✅ Filename
+- ✅ Page Number
+- ✅ Section Title
+
+### Metadata Typically Excluded
+
+- ❌ Language (unless required)
+- ❌ Document Version (unless relevant)
+- ❌ Created By
+- ❌ Ingestion Timestamp
+
+This approach provides rich enterprise metadata while minimizing LLM token consumption and operational cost.
