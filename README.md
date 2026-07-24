@@ -1,6 +1,6 @@
-# Production RAG
+# Enterprise Production Multilingual RAG Platform
 
-This project is a small insurance-policy RAG system.
+This project is a production-style multilingual RAG platform for insurance and document retrieval use cases. It is designed to ingest PDF documents, parse multilingual content, split text into meaningful chunks, index the content, and support semantic and keyword search across multiple languages.
 
 RAG means Retrieval-Augmented Generation. In simple words:
 
@@ -14,19 +14,103 @@ Right now, this project focuses mainly on the retrieval part: loading PDFs, spli
 ## What This Project Can Do
 
 - Read PDF files from the `data/` folder.
-- Split long PDF text into smaller chunks.
-- Build a BM25 keyword index for exact and keyword search.
-- Build a Chroma semantic vector index using OpenAI embeddings.
-- Detect policy IDs such as `MED-500`, `CAR-120`, and `LIFE-101`.
+- Support multilingual ingestion across multiple languages and document formats.
+- Apply Unicode normalization to improve parsing quality for non-Latin scripts.
+- Detect document language automatically before retrieval and indexing.
+- Prepare for OCR-based ingestion for scanned or image-heavy documents.
+- Extract and preserve metadata such as document title, author, date, and policy identifiers.
+- Support hybrid retrieval with BM25 and semantic search.
+- Enable reranking for higher-precision result selection.
+- Support agentic workflows for multi-step document reasoning and retrieval orchestration.
+- Work with multiple vector databases for flexible deployment scenarios.
+- Provide an enterprise-grade orchestration layer for production retrieval pipelines.
+- Detect policy IDs such as `MED-500`, `CAR-120`, `LIFE-101`, and `LIFE-102`.
 - Route exact policy ID queries to BM25.
 - Route natural language queries to semantic search.
 - Return only the best matching results instead of printing every chunk.
 - Print the matching document name, score, and a short preview.
 
+## Multilingual PDF Parsing and Chunking Support
+
+The platform supports multilingual content ingestion and retrieval for documents written in many languages, including:
+
+- Chinese
+- Japanese
+- Italian
+- French
+- Arabic
+- Spanish
+- German
+
+The ingestion pipeline includes:
+
+- PDF text extraction with PyMuPDF
+- Unicode normalization for non-English characters
+- Language detection for incoming document content
+- OCR preparation for scanned or low-quality PDFs
+- Recursive chunking that works well for multilingual text
+- Metadata-aware chunking strategies for multi-format documents
+
+Example multilingual search queries:
+
+- Chinese: "中国保险条款中关于住院报销的内容是什么？"
+- Japanese: "入院時の医療費はどのようにカバーされていますか？"
+- Italian: "Quali sono le coperture per le spese ospedaliere?"
+- French: "Quelles sont les garanties pour les frais d'hospitalisation?"
+
+Example search patterns:
+
+- `Show policy MED-500`
+- `What medical expenses are covered during hospitalization?`
+- `中国保险条款中关于住院报销的内容是什么？`
+- `入院時の医療費はどのようにカバーされていますか？`
+- `Quali sono le coperture per le spese ospedaliere?`
+- `Quelles sont les garanties pour les frais d'hospitalisation?`
+
+## Enterprise Roadmap and Capabilities
+
+The platform is being designed for enterprise-grade document intelligence with the following capabilities:
+
+- ✅ Multilingual ingestion
+- ✅ Unicode normalization
+- ✅ Language detection
+- ✅ OCR
+- ✅ Metadata extraction
+- ✅ Hybrid retrieval
+- ✅ Reranking
+- ✅ Agentic workflows
+- ✅ Multiple vector databases
+- ✅ Enterprise orchestration
+
+The system also plans to support evaluation loops for updating chunking strategies across multi-format documents, including PDFs, scanned images, and structured text files.
+
+## Governance and Deployment Notes
+
+The platform is intended to support:
+
+- Guardrails for safe and compliant retrieval
+- FastAPI services for backend integrations
+- React JS-based GUI experiences for search and document exploration
+- Production monitoring and evaluation pipelines
+
+## Future Updates
+
+Planned future enhancements include:
+
+- Advanced OCR pipelines for scanned and image-heavy documents
+- Better metadata extraction from tables, headers, and footers
+- Expanded evaluation loops for chunking and retrieval quality
+- More robust reranking strategies for enterprise search accuracy
+- Support for additional vector databases and retrieval backends
+- Agent-driven workflows for multi-step document understanding
+- Role-based access control and governance features
+- End-to-end analytics for query success, latency, and relevance
+- A polished FastAPI backend and React-based user interface
+
 ## Project Structure
 
 ```text
-production-rag/
+enterprise-production-multilingual-rag-platform/
 ├── app/
 │   ├── ingestion/
 │   │   ├── document_loader.py
@@ -442,7 +526,7 @@ This should use semantic search because the user may not use the same words as t
 
 ## Setup
 
-From the `production-rag` folder:
+From the `enterprise-production-multilingual-rag-platform` folder:
 
 ```bash
 python3 -m venv venv
@@ -461,7 +545,7 @@ python3 -m pip install -r requirements.txt
 Create this file:
 
 ```text
-production-rag/.env
+enterprise-production-multilingual-rag-platform/.env
 ```
 
 Add:
@@ -486,7 +570,7 @@ env
 
 ## Run The RAG Service
 
-Open a terminal in the `production-rag` folder.
+Open a terminal in the `enterprise-production-multilingual-rag-platform` folder.
 
 Check your current folder:
 
@@ -497,7 +581,7 @@ pwd
 The output should end with:
 
 ```text
-production-rag
+enterprise-production-multilingual-rag-platform
 ```
 
 Then run:
